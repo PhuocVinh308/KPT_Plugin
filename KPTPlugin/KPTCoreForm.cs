@@ -24,11 +24,11 @@ using PdfFont = iTextSharp.text.Font;
 using PdfImage = iTextSharp.text.Image;
 using PdfRectangle = iTextSharp.text.Rectangle;
 
-namespace XimeeWeightPlugin
+namespace KPTPlugin
 {
 
 
-public class XimeeCoreForm : Form
+public class KPTCoreForm : Form
 {
 	public enum AppMode
 	{
@@ -114,7 +114,7 @@ public class XimeeCoreForm : Form
 	{
 		get
 		{
-			string text = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "XimeeCore");
+			string text = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "KPTCore");
 			if (!Directory.Exists(text))
 			{
 				Directory.CreateDirectory(text);
@@ -150,7 +150,7 @@ public class XimeeCoreForm : Form
 		}
 	}
 
-	public XimeeCoreForm(RhinoDoc doc, double volumeCm3, List<GeometryBase> metalGeoms, AppMode mode = AppMode.Core)
+	public KPTCoreForm(RhinoDoc doc, double volumeCm3, List<GeometryBase> metalGeoms, AppMode mode = AppMode.Core)
 	{
 		currentMode = mode;
 		this.doc = doc;
@@ -278,11 +278,11 @@ public class XimeeCoreForm : Form
 		}
 		else if (currentMode == AppMode.Weight)
 		{
-			((Control)this).Text = "Ximee Weight";
+			((Control)this).Text = "KPT Weight";
 		}
 		else
 		{
-			((Control)this).Text = "Ximee Core";
+			((Control)this).Text = "KPT Core";
 		}
 		((Form)this).StartPosition = (FormStartPosition)1;
 		((Form)this).FormBorderStyle = (FormBorderStyle)6;

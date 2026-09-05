@@ -5,7 +5,7 @@ using Rhino;
 using Rhino.Commands;
 using Rhino.Geometry;
 
-namespace XimeeWeightPlugin
+namespace KPTPlugin
 {
 	[Guid("8C2D4A1F-3B5E-49C7-A6F5-1D8C9A3B5E4F")]
 	public class KPTCommand : Command
@@ -23,7 +23,7 @@ namespace XimeeWeightPlugin
 
 		protected override Result RunCommand(RhinoDoc doc, RunMode mode)
 		{
-			XimeeCoreForm form = new XimeeCoreForm(doc, 0.0, new List<GeometryBase>(), XimeeCoreForm.AppMode.GemMap);
+			KPTCoreForm form = new KPTCoreForm(doc, 0.0, new List<GeometryBase>(), KPTCoreForm.AppMode.GemMap);
 			IWin32Window owner = RhinoApp.MainWindow();
 			if (owner != null)
 			{

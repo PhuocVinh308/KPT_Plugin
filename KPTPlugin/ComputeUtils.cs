@@ -6,7 +6,7 @@ using Rhino.DocObjects;
 using Rhino.Geometry;
 using Rhino.Input.Custom;
 
-namespace XimeeWeightPlugin
+namespace KPTPlugin
 {
 
 

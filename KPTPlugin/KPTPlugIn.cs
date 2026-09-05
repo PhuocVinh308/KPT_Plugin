@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices;
 using Rhino.PlugIns;
 
-namespace XimeeWeightPlugin
+namespace KPTPlugin
 {
 
 
