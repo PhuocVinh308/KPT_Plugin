@@ -94,8 +94,7 @@ public class KPTCoreForm : Form
 	private Button btnAnnotate;
 
 	private Button btnExportPDF;
-	private Button btnSupport;
-
+	
 	private string pdfExportPath = "";
 
 	private TextBox txtModelCode;
@@ -418,17 +417,9 @@ public class KPTCoreForm : Form
 		((Control)btnExportPDF).Text = (isVN ? "Xuất PDF" : "PDF Export");
 		((Control)btnExportPDF).Width = 60;
 		((Control)btnExportPDF).Dock = (DockStyle)3;
-		((Control)btnExportPDF).Click += BtnExportPDF_Click;
-		Button valSupport = new Button();
-		((Control)valSupport).Text = (isVN ? "Support 3D" : "3D Support");
-		((Control)valSupport).Width = 75;
-		((Control)valSupport).Dock = (DockStyle)3;
-		btnSupport = valSupport;
-		((Control)btnSupport).Click += BtnSupport_Click;
 		((Control)panelGemBtns).Controls.Add((Control)btnPrintGemMap);
 		((Control)panelGemBtns).Controls.Add((Control)btnAnnotate);
 		((Control)panelGemBtns).Controls.Add((Control)btnRestoreGemMap);
-		((Control)panelGemBtns).Controls.Add((Control)btnSupport);
 		panelModelCode = new Panel();
 		((Control)panelModelCode).Height = 25;
 		lblModelCode = new Label();
@@ -543,8 +534,7 @@ public class KPTCoreForm : Form
 		((Control)btnPrintGemMap).Font = font;
 		((Control)btnAnnotate).Font = font;
 		((Control)btnExportPDF).Font = font;
-		((Control)btnSupport).Font = font;
-		((Control)lblModelCode).Font = font;
+				((Control)lblModelCode).Font = font;
 		((Control)txtModelCode).Font = font;
 		((Control)lblNi).Font = font;
 		((Control)txtNi).Font = font;
@@ -620,8 +610,7 @@ public class KPTCoreForm : Form
 				((Control)btnAnnotate).Width = (int)(65f * num);
 				((Control)btnRestoreGemMap).Width = (int)(65f * num);
 				((Control)btnExportPDF).Width = (int)(60f * num);
-				((Control)btnSupport).Width = (int)(75f * num);
-				((Control)btnLang).Width = (int)(35f * num);
+								((Control)btnLang).Width = (int)(35f * num);
 				((Control)btnHideGemMap).Width = (int)(60f * num);
 				num5 += num6;
 				int num8 = (int)(25f * num);
@@ -839,8 +828,7 @@ public class KPTCoreForm : Form
 		((Control)btnPrintGemMap).Text = (isVN ? "Chụp Ảnh" : "Snapshot");
 		((Control)btnAnnotate).Text = (isVN ? "Ghi Chú" : "Annotate");
 		((Control)btnExportPDF).Text = (isVN ? "Xuất PDF" : "Export PDF");
-		((Control)btnSupport).Text = (isVN ? "Support 3D" : "3D Support");
-		((Control)lblModelCode).Text = (isVN ? "Mã:" : "Code:");
+				((Control)lblModelCode).Text = (isVN ? "Mã:" : "Code:");
 		((Control)lblNi).Text = "Ni:";
 		((Control)btnRestoreGemMap).Text = (isVN ? "Trở về" : "Back");
 		((Control)btnHideGemMap).Text = (isVN ? "Ẩn" : "Hide");
@@ -2440,20 +2428,6 @@ public class KPTCoreForm : Form
 		finally
 		{
 			if (val != null) ((IDisposable)val).Dispose();
-		}
-	}
-
-	private void BtnSupport_Click(object sender, EventArgs e)
-	{
-		((Control)this).Hide();
-		try
-		{
-			RhinoApp.RunScript("KPTSupport", false);
-		}
-		finally
-		{
-			((Control)this).Show();
-			doc.Views.Redraw();
 		}
 	}
 }
