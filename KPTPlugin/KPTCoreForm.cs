@@ -100,7 +100,8 @@ public class KPTCoreForm : Form
 	private TextBox txtModelCode;
 
 	private Label lblModelCode;
-	private Button btnNi;
+	private Label lblNi;
+	private TextBox txtNi;
 
 	private Panel panelModelCode;
 
@@ -423,23 +424,21 @@ public class KPTCoreForm : Form
 		panelModelCode = new Panel();
 		((Control)panelModelCode).Height = 25;
 		lblModelCode = new Label();
-		((Control)lblModelCode).Text = (isVN ? "Mã" : "Code");
-		((Control)lblModelCode).Width = 35;
-		((Control)lblModelCode).Dock = (DockStyle)3;
+		((Control)lblModelCode).Text = (isVN ? "Mã:" : "Code:");
 		lblModelCode.TextAlign = (ContentAlignment)16;
 
-		btnNi = new Button();
-		((Control)btnNi).Text = "Ni";
-		((Control)btnNi).Width = 40;
-		((Control)btnNi).Dock = (DockStyle)4;
-		((Control)btnNi).Click += BtnNi_Click;
-
 		txtModelCode = new TextBox();
-		((Control)txtModelCode).Dock = (DockStyle)5;
 
-		((Control)panelModelCode).Controls.Add((Control)txtModelCode);
-		((Control)panelModelCode).Controls.Add((Control)btnNi);
+		lblNi = new Label();
+		((Control)lblNi).Text = "Ni:";
+		lblNi.TextAlign = (ContentAlignment)16;
+
+		txtNi = new TextBox();
+
 		((Control)panelModelCode).Controls.Add((Control)lblModelCode);
+		((Control)panelModelCode).Controls.Add((Control)txtModelCode);
+		((Control)panelModelCode).Controls.Add((Control)lblNi);
+		((Control)panelModelCode).Controls.Add((Control)txtNi);
 		((Control)this).Controls.Add((Control)panelModelCode);
 		((Control)this).Controls.Add((Control)gridMetal);
 		((Control)this).Controls.Add((Control)panelColor);
@@ -538,7 +537,8 @@ public class KPTCoreForm : Form
 		((Control)btnExportPDF).Font = font;
 		((Control)lblModelCode).Font = font;
 		((Control)txtModelCode).Font = font;
-		((Control)btnNi).Font = font;
+		((Control)lblNi).Font = font;
+		((Control)txtNi).Font = font;
 		((Control)btnRestoreGemMap).Font = font;
 		((Control)btnHideGemMap).Font = font;
 		((Control)btnLang).Font = font;
@@ -614,11 +614,27 @@ public class KPTCoreForm : Form
 				((Control)btnLang).Width = (int)(35f * num);
 				((Control)btnHideGemMap).Width = (int)(60f * num);
 				num5 += num6;
-				int num8 = (int)(30f * num);
+				int num8 = (int)(25f * num);
 				((Control)panelModelCode).SetBounds(0, num5, formWidth, num8);
 				((Control)panelModelCode).Height = num8;
-				((Control)lblModelCode).Width = (int)(35f * num);
-				((Control)btnNi).Width = (int)(40f * num);
+
+				int lblCodeW = (int)(32f * num);
+				int lblNiW = (int)(25f * num);
+				int txtNiW = (int)(55f * num);
+				int txtCodeW = formWidth - lblCodeW - lblNiW - txtNiW - 15;
+				if (txtCodeW < 40) txtCodeW = 40;
+
+				int currentX = 3;
+				((Control)lblModelCode).SetBounds(currentX, 2, lblCodeW, num8 - 4);
+				currentX += lblCodeW;
+
+				((Control)txtModelCode).SetBounds(currentX, 2, txtCodeW, num8 - 4);
+				currentX += txtCodeW + 5;
+
+				((Control)lblNi).SetBounds(currentX, 2, lblNiW, num8 - 4);
+				currentX += lblNiW;
+
+				((Control)txtNi).SetBounds(currentX, 2, txtNiW, num8 - 4);
 				num5 += num8;
 				int num9;
 				if (setFormSize)
@@ -813,7 +829,8 @@ public class KPTCoreForm : Form
 		((Control)btnPrintGemMap).Text = (isVN ? "Chụp Ảnh" : "Snapshot");
 		((Control)btnAnnotate).Text = (isVN ? "Ghi Chú" : "Annotate");
 		((Control)btnExportPDF).Text = (isVN ? "Xuất PDF" : "Export PDF");
-		((Control)lblModelCode).Text = (isVN ? "Mã" : "Code");
+		((Control)lblModelCode).Text = (isVN ? "Mã:" : "Code:");
+		((Control)lblNi).Text = "Ni:";
 		((Control)btnRestoreGemMap).Text = (isVN ? "Trở về" : "Back");
 		((Control)btnHideGemMap).Text = (isVN ? "Ẩn" : "Hide");
 		string[] array = new string[5] { "Tất cả", "Vàng", "Trắng", "Hồng", "Platinum" };
@@ -907,6 +924,26 @@ public class KPTCoreForm : Form
 			RhinoApp.RunScript("_Zoom _Selected", false);
 		}
 		doc.Views.Redraw();
+	}
+
+		private string GetCombinedModelCode()
+	{
+		string codeStr = ((Control)txtModelCode).Text.Trim();
+		string niStr = ((Control)txtNi).Text.Trim();
+		if (!string.IsNullOrEmpty(codeStr) && !string.IsNullOrEmpty(niStr))
+		{
+			string formattedNi = niStr.StartsWith("Ni:", StringComparison.OrdinalIgnoreCase) ? niStr : ("Ni: " + niStr);
+			return codeStr + " " + formattedNi;
+		}
+		if (!string.IsNullOrEmpty(codeStr))
+		{
+			return codeStr;
+		}
+		if (!string.IsNullOrEmpty(niStr))
+		{
+			return niStr.StartsWith("Ni:", StringComparison.OrdinalIgnoreCase) ? niStr : ("Ni: " + niStr);
+		}
+		return "";
 	}
 
 	private void BtnAnnotate_Click(object sender, EventArgs e)
@@ -1034,7 +1071,7 @@ public class KPTCoreForm : Form
 				val9.Attributes.ColorSource = (ObjectColorSource)1;
 				val9.CommitChanges();
 			}
-			string text5 = ((Control)txtModelCode).Text.Trim();
+			string text5 = GetCombinedModelCode();
 			if (!string.IsNullOrEmpty(text5))
 			{
 				num3++;
@@ -1296,7 +1333,7 @@ public class KPTCoreForm : Form
 		//IL_0091: Invalid comparison between Unknown and I4
 		SaveFileDialog val = new SaveFileDialog();
 		((FileDialog)val).Filter = "PDF Files (*.pdf)|*.pdf";
-		string text = ((Control)txtModelCode).Text.Trim();
+		string text = GetCombinedModelCode();
 		((FileDialog)val).FileName = (isVN ? ("Bao_Cao_Da_" + (string.IsNullOrEmpty(text) ? "KPT" : text) + ".pdf") : ("Gem_Report_" + (string.IsNullOrEmpty(text) ? "KPT" : text) + ".pdf"));
 		((FileDialog)val).Title = (isVN ? "Lưu báo cáo PDF 3D" : "Save 3D PDF Report");
 		if ((int)((CommonDialog)val).ShowDialog() == 1)
@@ -1441,7 +1478,7 @@ public class KPTCoreForm : Form
 		}
 		try
 		{
-			string text4 = ((Control)txtModelCode).Text.Trim();
+			string text4 = GetCombinedModelCode();
 			Document val2 = new Document(PageSize.A4, 36f, 36f, 36f, 36f);
 			using (FileStream fileStream = new FileStream(text, FileMode.Create))
 			{
@@ -2394,49 +2431,5 @@ public class KPTCoreForm : Form
 			if (val != null) ((IDisposable)val).Dispose();
 		}
 	}
-
-	private void BtnNi_Click(object sender, EventArgs e)
-	{
-		((Control)this).Hide();
-		try
-		{
-			GetString getStr = new GetString();
-			((GetBaseClass)getStr).SetCommandPrompt(isVN ? "Nhập số Ni (ví dụ: 12, 14.5):" : "Enter Ring Size Ni (e.g., 12, 14.5):");
-			getStr.Get();
-
-			if ((int)((GetBaseClass)getStr).CommandResult() == 0)
-			{
-				string inputVal = getStr.StringResult().Trim();
-				if (!string.IsNullOrEmpty(inputVal))
-				{
-					string niFormatted = inputVal.StartsWith("Ni:", StringComparison.OrdinalIgnoreCase) ? inputVal : ("Ni: " + inputVal);
-					string currentText = ((Control)txtModelCode).Text.Trim();
-
-					if (string.IsNullOrEmpty(currentText))
-					{
-						((Control)txtModelCode).Text = niFormatted;
-					}
-					else if (System.Text.RegularExpressions.Regex.IsMatch(currentText, @"Ni:\s*\S+"))
-					{
-						((Control)txtModelCode).Text = System.Text.RegularExpressions.Regex.Replace(currentText, @"Ni:\s*\S+", niFormatted);
-					}
-					else
-					{
-						((Control)txtModelCode).Text = currentText + " " + niFormatted;
-					}
-				}
-			}
-		}
-		catch (Exception ex)
-		{
-			MessageBox.Show(isVN ? ("Lỗi khi nhập Ni: " + ex.Message) : ("Error entering Ring Size: " + ex.Message));
-		}
-		finally
-		{
-			((Control)this).Show();
-			doc.Views.Redraw();
-		}
-	}
 }
-
 }
